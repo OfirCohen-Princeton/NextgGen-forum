@@ -1,0 +1,692 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חברי הפורום</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F6F1E7;--surface:#FFFEFB;--surface2:#F3EEE3;--surface3:#E7DECF;
+  --border:rgba(37,31,18,0.08);--border2:rgba(29,34,55,0.16);
+  --text1:#16130E;--text2:#5F5748;--text3:#8F8778;
+  --accent:#0F2747;--accent2:#243F69;--gold:#C8A35A;--gold-soft:#E7D2A2;--linkedin:#0A66C2;--r:16px;--rs:10px
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#141410;--surface:#1F1E19;--surface2:#28271F;--surface3:#312F25;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text1:#F0EDE0;--text2:#A09D8E;--text3:#605D50;
+  --accent:#4A7FD4;--linkedin:#5CA3E6
+}}
+body{font-family:'Heebo',sans-serif;background:
+radial-gradient(circle at top,rgba(200,163,90,.18),transparent 28%),
+linear-gradient(180deg,#FBF7EF 0%,#F4EEE2 100%);
+color:var(--text1);min-height:100vh;line-height:1.6}
+.topbar{background:linear-gradient(90deg,#0E2543,#1A345B);color:#fff;padding:0 32px;display:flex;align-items:center;gap:16px;height:56px;position:sticky;top:0;z-index:20;box-shadow:0 8px 22px rgba(12,24,45,.16)}
+.topbar-logo{font-family:'Frank Ruhl Libre',serif;font-size:18px;font-weight:700;white-space:nowrap;color:#fff}
+.topbar-sep{width:1px;height:22px;background:rgba(255,255,255,0.25);flex-shrink:0}
+.topbar-sub{font-size:13px;color:rgba(255,255,255,0.65);white-space:nowrap}
+.topbar-spacer{flex:1}
+.topbar-count{font-size:12px;background:rgba(255,255,255,0.15);border-radius:20px;padding:3px 12px;white-space:nowrap;color:#fff}
+.hero{max-width:1180px;margin:26px auto 0;padding:0 24px}
+.hero-shell{position:relative;overflow:hidden;border-radius:32px;min-height:280px;background:linear-gradient(135deg,rgba(11,34,66,.92),rgba(34,76,132,.8));box-shadow:0 24px 70px rgba(20,28,40,.18);border:1px solid rgba(255,255,255,.28)}
+.hero-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,20,39,.18),rgba(7,18,35,.38));pointer-events:none}
+.intro{max-width:1180px;margin:18px auto 0;padding:0 24px}
+.intro-box{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(249,244,235,.98));border:1px solid rgba(200,163,90,.22);border-radius:28px;padding:30px 34px;box-shadow:0 22px 48px rgba(18,29,45,.08)}
+.intro-eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.intro-title{font-family:'Frank Ruhl Libre',serif;font-size:34px;line-height:1.15;margin-bottom:14px;color:var(--accent)}
+.intro-text{font-size:15px;line-height:1.95;color:var(--text2);max-width:920px}
+.intro-points{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.intro-pill{display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;background:rgba(15,39,71,.05);border:1px solid rgba(200,163,90,.22);color:var(--accent);font-size:12px;font-weight:600}
+.controls{max-width:1180px;margin:0 auto;padding:24px 24px 0;display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:380px}
+.topic-bar{max-width:1180px;margin:0 auto;padding:14px 24px 0;display:flex;gap:10px;flex-wrap:wrap}
+.topic-chip{border:1px solid rgba(15,39,71,.12);background:rgba(255,255,255,.92);color:var(--accent);padding:8px 14px;border-radius:999px;font-family:'Heebo',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s ease;box-shadow:0 5px 18px rgba(26,58,107,.05)}
+.topic-chip:hover{transform:translateY(-1px);border-color:rgba(26,58,107,.28)}
+.topic-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 10px 24px rgba(26,58,107,.22)}
+.search-wrap svg{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+input[type=search]{width:100%;padding:10px 40px 10px 14px;border:1px solid var(--border2);border-radius:var(--rs);background:var(--surface);color:var(--text1);font-family:'Heebo',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+input[type=search]:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent)}
+input[type=search]::placeholder{color:var(--text3)}
+main{max-width:1180px;margin:0 auto;padding:20px 24px 64px}
+.loading-note{max-width:1180px;margin:16px auto 0;padding:0 24px;color:var(--text2);font-size:14px}
+.section-block{max-width:1180px;margin:0 auto;padding:18px 24px 0}
+.section-head{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px;margin-bottom:14px}
+.section-kicker{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.section-title{font-family:'Frank Ruhl Libre',serif;font-size:28px;line-height:1.15;color:var(--text1)}
+.section-copy{font-size:14px;color:var(--text2);max-width:700px}
+.steering-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.card{background:linear-gradient(180deg,#fffdfa,#fff);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;box-shadow:0 14px 34px rgba(30,34,44,.05)}
+.card:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(16,24,36,.10)}
+.card-top{padding:20px 18px 14px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.avatar{width:104px;height:104px;border-radius:26px;flex-shrink:0;overflow:hidden;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;color:#fff;background:#aaa}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.card-identity{min-width:0;width:100%}
+.card-name{font-size:16px;font-weight:700;line-height:1.3;margin-bottom:4px}
+.card-role{font-size:12.5px;color:var(--text2);line-height:1.55;margin-bottom:5px;min-height:40px}
+.card-subtitle{font-size:11.5px;color:var(--accent2);line-height:1.6;min-height:34px;margin-bottom:6px}
+.card-loc{display:inline-flex;align-items:center;justify-content:center;gap:4px;font-size:11px;color:var(--text3);margin-top:2px;max-width:100%}
+.card-loc span{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.card-bio{padding:0 18px 14px;font-size:12px;color:var(--text2);line-height:1.7;border-top:1px solid var(--border);padding-top:12px;text-align:center;min-height:140px}
+.bio-short{display:block}
+.bio-full{display:none;margin-top:10px}
+.card-points{list-style:none;display:flex;flex-direction:column;gap:8px;text-align:right}
+.card-points li{position:relative;padding-right:14px}
+.card-points li::before{content:'';position:absolute;right:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.bio-full-text{font-size:12px;line-height:1.8;color:var(--text2);text-align:right}
+.bio-toggle{background:none;border:none;cursor:pointer;font-family:'Heebo',sans-serif;font-size:11.5px;color:var(--accent);margin-top:8px;padding:0;display:inline-flex;align-items:center;gap:3px}
+.card-footer{margin-top:auto;padding:10px 16px 14px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap}
+.btn-li{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:var(--rs);background:var(--linkedin);color:#fff;font-family:'Heebo',sans-serif;font-size:12px;font-weight:500;text-decoration:none;transition:opacity .15s}
+.btn-li:hover{opacity:.85}
+.btn-em{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--surface2);color:var(--text2);font-family:'Heebo',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:background .15s;max-width:100%}
+.btn-em:hover{background:var(--surface3)}
+.btn-em.on{background:var(--surface);color:var(--accent);border-color:var(--accent);cursor:default;user-select:all;word-break:break-all}
+.no-res{grid-column:1/-1;text-align:center;padding:60px;color:var(--text3);font-size:14px}
+@media(max-width:800px){.steering-grid{grid-template-columns:1fr}.intro-title,.section-title{font-size:24px}}
+@media(max-width:600px){.topbar-sub,.topbar-sep{display:none}.grid{grid-template-columns:1fr}.hero,.topic-bar,.intro,.section-block,.loading-note{padding-left:16px;padding-right:16px}.controls,main{padding-left:16px;padding-right:16px}.hero-shell{min-height:220px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="topbar-logo">NextGen Leadership Forum</span>
+  <div class="topbar-sep"></div>
+  <span class="topbar-sub">האנשים שמובילים את הקהילה</span>
+  <div class="topbar-spacer"></div>
+  <span class="topbar-count" id="cnt">טוען...</span>
+</div>
+<section class="hero">
+  <div class="hero-shell">
+    <img class="hero-art" src="file:///G:/My%20Drive/%D7%94%D7%95%D7%95%D7%94%202021/%D7%A2%D7%91%D7%95%D7%93%D7%94/The%20%20NextGen%20Leadership%20%20Forum%F0%9F%92%A5/NextGen%20Leadership.png" alt="NextGen Leadership">
+    <div class="hero-overlay"></div>
+  </div>
+</section>
+<section class="intro">
+  <div class="intro-box">
+    <div class="intro-eyebrow">מטרת הפורום</div>
+    <h2 class="intro-title">פורום שמחבר בין מנהיגות ישראלית צעירה להזדמנויות של השפעה</h2>
+    <p class="intro-text">הפורום נועד לבנות רשת איכותית של צעירים וצעירות שפועלים בעולמות המדיניות, הביטחון, הטכנולוגיה, האקדמיה והחברה, ולחבר ביניהם כדי לייצר שיתופי פעולה, למידה משותפת והשפעה ציבורית בישראל ובעולם. זהו מרחב שמפגיש בין ניסיון מעשי, חזון ציבורי וקהילה אנושית חזקה.</p>
+    <div class="intro-points">
+      <span class="intro-pill">קהילה גלובלית של מנהיגים צעירים</span>
+      <span class="intro-pill">חיבורים בין ישראל, ארה״ב ואירופה</span>
+      <span class="intro-pill">מדיניות, ביטחון, טכנולוגיה והשפעה</span>
+    </div>
+  </div>
+</section>
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="search" id="q" placeholder="חיפוש לפי שם, תחום, מוסד, עיר או נושא..." oninput="flt()">
+  </div>
+</div>
+<div class="topic-bar" id="topicBar"></div>
+<div class="loading-note" id="loadingNote">טוען את חברי הפורום...</div>
+<section class="section-block" id="steeringSection" style="display:none">
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">הובלת הפורום</div>
+      <h2 class="section-title">צוות ההיגוי של הפורום</h2>
+    </div>
+    <p class="section-copy">הצוות שמוביל את הפורום, מעצב את הכיוון האסטרטגי שלו ומחבר בין החברים, התוכן והשותפויות.</p>
+  </div>
+  <div class="steering-grid" id="steeringGrid"></div>
+</section>
+<section class="section-block" id="membersHeading">
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">קהילת הפורום</div>
+      <h2 class="section-title">חברי הפורום</h2>
+    </div>
+    <p class="section-copy">אנשי מדיניות, ביטחון, טכנולוגיה, כלכלה, אקדמיה ויזמות שפועלים בזירה הבינלאומית ומרכיבים את קהילת הפורום.</p>
+  </div>
+</section>
+<main><div class="grid" id="grid"></div></main>
+<script>
+var SHEET_ID='1CC_J-IhuktNHsul-C01gHUs38r9LvWheMDU9lcVjkOg';
+var CL=['#1A3A6B','#2D6A4F','#7B2D8B','#B03A2E','#D35400','#1A5276','#196F3D','#6E2FBF','#0E6655','#7D6608','#1A6B4A','#6B1A3A'];
+var ACTIVE_TOPIC='';
+var TOPIC_RULES=[
+  {id:'security',label:'ביטחון',terms:['ביטחון','security','defense','defence','idf','8200','מודיעין','military','national security','defense tech','שריון','dual use']},
+  {id:'policy',label:'מדיניות וקונגרס',terms:['קונגרס','congress','house of representatives','policy','public policy','מדיניות','ממשל','government','כנסת','הבית הלבן','senate']},
+  {id:'tech',label:'טכנולוגיה ו-AI',terms:['technology','tech','ai','artificial intelligence','innovation','חדשנות','טכנולוגיה','data','cyber','meta','product']},
+  {id:'economy',label:'כלכלה והשקעות',terms:['economics','economic','economy','finance','banking','investment','investments','private equity','vc','venture','כלכלה','השקעות','אוצר','בנק עולמי']},
+  {id:'academia',label:'אקדמיה ומחקר',terms:['research','academic','academia','harvard','yale','princeton','oxford','georgetown','university','אקדמיה','מחקר','סטודנט','candidate']},
+  {id:'law',label:'משפט ודיפלומטיה',terms:['law','legal','attorney','lawyer','משפט','משפטן','דיפלומטיה','שגריר','או\"ם','un','foreign affairs']}
+];
+// Columns in sheet: 0=Timestamp,1=×©× ×¤×¨×˜×™,2=×©× ×ž×©×¤×—×”,3=LinkedIn,4=×ª×¤×§×™×“,5=×ž×™×§×•×,6=×‘×™×• ×§×¦×¨,7=×‘×™×• ×ž×¤×•×¨×˜,8=××™×ž×™×™×œ,9=×˜×œ×¤×•×Ÿ, 10+=×ª×ž×•× ×”(if exists)
+var MEMBERS=[
+  {n:'××•×¤×™×¨ ×›×”×Ÿ',r:'MPA candidate, Princeton University',loc:'Princeton, NJ',li:'https://www.linkedin.com/in/ofir-cohen-innovation',em:'ofir.c@princeton.edu',bs:'MPA candidate at Princeton, focusing on AI policy, innovation, and economic competitiveness. Former advisor in the U.S. House of Representatives. Previously Chief of Staff at DNAidea.',ph:''},
+  {n:'××¨×™××œ ×©×˜×™×™× ×‘×¨×’',r:'×× ×œ×™×¡×˜, ×”×‘× ×§ ×”×¢×•×œ×ž×™',loc:'Washington, DC',li:'https://www.linkedin.com/in/ariel-steinberg-090b89110/',em:'arielsteinberg2@gmail.com',bs:'×¢×©×•×¨ ×‘×™×—×™×“×” 8200, ×’×•×’×œ ×‘××™×¨×•×¤×”, ×ž×“×™× ×™×•×ª ×¦×™×‘×•×¨×™×ª ×‘×§× ×“×™ ×¡×§×•×œ â€” ×•×¢×›×©×™×• ×× ×œ×™×¡×˜ ×‘×‘× ×§ ×”×¢×•×œ×ž×™. ×ž×ª×¢× ×™×™×Ÿ ×‘×”×©×§×¢×•×ª ×™×¨×•×§×•×ª ×‘×“×’×© ×¢×œ ×ž×™×—×–×•×¨.',ph:''},
+  {n:'×ž×©×” ×—× ×•×›×”',r:'Government Relations, ×”×ª×¢×©×™×™×” ×”××•×•×™×¨×™×ª',loc:'Washington, DC',li:'',em:'Mosheh4@gmail.com',bs:'×¢×•×¨×š ×“×™×Ÿ ×•××™×© ×¦×™×‘×•×¨. ×œ×©×¢×‘×¨ ×™×•×¢×¥ ×©×¨ ×”×›×œ×›×œ×” ×•×—×‘×¨ ×ž×•×¢×¦×ª ×¢×™×¨ ×”×•×“ ×”×©×¨×•×Ÿ. ×›×™×•× ×§×©×¨×™ ×ž×ž×©×œ ×œ×ª×¢×©×™×™×” ×”××•×•×™×¨×™×ª ×‘×•×•×©×™× ×’×˜×•×Ÿ.',ph:''},
+  {n:'××‘×™×” ×œ×™×‘×¨×ž×Ÿ',r:'MPP candidate, Yale (Fulbright)',loc:'New Haven, CT',li:'https://www.linkedin.com/in/avia-liberman/',em:'avia.liberman@yale.edu',bs:'×¨×ž"×“ ×ž×—×§×¨ ×‘×ž×•×“×™×¢×™×Ÿ â†’ ×›×œ×›×œ× ×™×ª ×¨××©×™×ª ××•×¦×¨ â†’ OECD â†’ ×ž×›×•×Ÿ ×ª×›×œ×™×ª â†’ MPP Yale ×“×¨×š ×¤×•×œ×‘×¨×™×™×˜. ×ž×ª×ž×§×“ ×‘-Economic Peacebuilding.',ph:''},
+  {n:'× ×“×‘ ×©×•××˜',r:'×¡×’×Ÿ ×”×¦×™×¨ ×”×›×œ×›×œ×™ ×©×œ ×™×©×¨××œ ×‘×•×•×©×™× ×’×˜×•×Ÿ',loc:'Washington, DC',li:'https://www.linkedin.com/in/nadavshoat',em:'nadav.shoat@gmail.com',bs:'Director of Economic Strategy â€” ×§×™×“×•× ×ž×“×™× ×™×•×ª ×ž×•×œ ×”×‘×™×ª ×”×œ×‘×Ÿ, ×ž×©×¨×“ ×”××•×¦×¨ ×”××ž×¨×™×§××™ ×•×ž×—×œ×§×ª ×”×ž×“×™× ×”. MPM candidate, Georgetown.',ph:''},
+  {n:'××•×¨×™ ×× ×’×³×œ',r:'MSc Energy Systems, Oxford University',loc:'Oxford, England',li:'https://www.linkedin.com/in/uri-angel',em:'uriangelovadya@gmail.com',bs:'×‘×•×’×¨ PPE ×ž×”××•× ×™×‘×¨×¡×™×˜×” ×”×¢×‘×¨×™×ª, ×œ×©×¢×‘×¨ ×¡×ž× ×›"×œ ××¨×’×•×Ÿ ×—×™×™× ×•×¡×‘×™×‘×”. ×ž×ª×ž×§×“ ×‘×›×œ×›×œ×ª ×× ×¨×’×™×”, ×ž×¢×‘×¨ ×œ×× ×¨×’×™×•×ª ×ž×ª×—×“×©×•×ª ×•×ž×™× ×¨×œ×™× ×§×¨×™×˜×™×™×.',ph:''},
+  {n:'Aaron Simpson-Grossman',r:'Legal Officer, IDF â€” Incoming Wharton MBA',loc:'Tel Aviv â†’ Philadelphia',li:'https://www.linkedin.com/in/aaron-s-g/',em:'aaronsimpsongrossman@gmail.com',bs:'5 years as IDF officer and lawyer (MAG Corps), shaping Israeli legal strategy before the ICJ. LLB+BA magna cum laude (Hebrew U), MSc Finance summa cum laude (TAU). Incoming Wharton MBA.',ph:''},
+  {n:'×¨×•×ª× ××•×¨×’-×§×œ×™×¡×§×™',r:'×ž×™×™×¡×“ ×•×ž× ×”×œ, ×¢×ž×•×ª×ª LIBRAEL',loc:'×ª×œ ××‘×™×‘',li:'https://www.linkedin.com/in/rotem-a-oreg/',em:'rotem.a.oreg@gmail.com',bs:'×—×•×§×¨, ×™×•×¢×¥ ×•×ž×¨×¦×” ×¢×œ ×¤×•×œ×™×˜×™×§×” ×•×ž×“×™× ×™×•×ª ×—×•×¥ ××ž×¨×™×§××™×ª. ×ž× ×”×œ ××ª "×•×•×©×™× ×’×˜×•×Ÿ ××§×¡×¤×¨×¡". ×œ×©×¢×‘×¨ ×™×•×¢×¥ ×œ×©×’×¨×™×¨ ××¨×”"×‘ ×‘×™×©×¨××œ.',ph:''},
+  {n:'×“×•×“ ×¡×œ×•×ž×•×Ÿ',r:'×™×•×¢×¥ ×œ×©×’×¨×™×¨ ×™×©×¨××œ ×‘××•"×',loc:'New York',li:'https://www.linkedin.com/in/davidsalomon-ny',em:'Dudy.sal10@gmail.com',bs:'×™×•×¢×¥ ×¤×•×œ×™×˜×™ ×‘×›× ×¡×ª, ×¡×•×¤×¨ ×¤×¨×•×–×”, ×œ×•×—× ×‘×™×—×™×“×” ×ž×™×•×—×“×ª â€” ×›×™×•× ×™×•×¢×¥ ×œ×©×’×¨×™×¨ ×™×©×¨××œ ×‘××•"× ×‘× ×™×• ×™×•×¨×§.',ph:''},
+  {n:'×‘× ×™×” ×©×¨×œ×•',r:'×™×•×¢×¥ ×§×¨× ×•×ª ×”×•×Ÿ ×¡×™×›×•×Ÿ â€” Defense Tech',loc:'Silicon Valley',li:'https://www.linkedin.com/in/benaya-cherlow/',em:'cherlow7@gmail.com',bs:'×§×¦×™×Ÿ ×©×¨×™×•×Ÿ ×•×§×©×¨×™ ×—×•×¥, ×ª×•××¨ ×©× ×™ Syracuse, ×™×•×¢×¥ ×§×©×¨×™ ×—×•×¥ ×‘×§×•× ×’×¨×¡, ×ª×¤×§×™×“ ×‘×‘×™×ª ×”×œ×‘×Ÿ. ×›×™×•× ×ž×—×‘×¨ ×‘×™×Ÿ ×ª×œ ××‘×™×‘, ×•×•×©×™× ×’×˜×•×Ÿ ×•×¡×™×œ×™×§×•×Ÿ ×•××œ×™ ×‘×ª×—×•× ×‘×™×˜×—×•×Ÿ ×œ××•×ž×™.',ph:''},
+  {n:'×©×ž×¢×•×Ÿ ×¨×¤××œ×™',r:'×¢×ž×™×ª ×‘×›×™×¨, ×ž×›×•×Ÿ ×“×•×“ ×œ×ž×“×™× ×™×•×ª ×‘×™×˜×—×•×Ÿ',loc:'×™×©×¨××œ',li:'https://www.linkedin.com/in/shimon-refaeli-0587b419a',em:'shimonrefaeli5@gmail.com',bs:'×œ×©×¢×‘×¨ ×™×•×¢×¥ ×ž×“×™× ×™ ×œ×©×¨ ×¨×•×Ÿ ×“×¨×ž×¨, ×¢×‘×•×“×” ×‘×ž×•×¢×¦×” ×œ×‘×™×˜×—×•×Ÿ ×œ××•×ž×™ ×•×—×“×¨ ×ž×¦×‘. ×ž×™×™×¡×“ ×¤×•×“×§××¡×˜ "×ž×¡×¢ ×‘×™×Ÿ ×¨×¢×™×•× ×•×ª". ×›×ª×‘ ×‘-Wall Street Journal.',ph:''},
+  {n:'×¢×•×–×™ ×§×œ×›×”×™×™×',r:'Client Solutions Manager, Meta Israel',loc:'×™×©×¨××œ',li:'https://www.linkedin.com/in/uzi-kalchaim-strategy/',em:'uzikal36@gmail.com',bs:'×¢×•"×“ ×•×›×œ×›×œ×Ÿ. ×œ×©×¢×‘×¨ ×™×•×¢×¥ ×œ×©×¨×™ ×”××•×¦×¨ ×•×”×‘×™×˜×—×•×Ÿ, ×¢×•"×“ ×§×¨× ×•×ª ×”×©×§×¢×” ×‘×”×¨×¦×•×’ ×¤×•×§×¡ × ××ž×Ÿ. ×›×™×•× CSM ×‘×¦×•×•×ª Media & Aggregators ×‘×ž×˜×.',ph:''}
+];
+MEMBERS=[];
+
+var PROFILE_OVERRIDES={
+  'Aaron Simpson-Grossman':{
+    r:'קצין משפטי ב-IDF ומועמד ל-Wharton MBA',
+    loc:'תל אביב -> פילדלפיה',
+    hd:'משפטן וקצין בעל ניסיון בזירה הביטחונית והבינלאומית',
+    bs:'שירת כחמש שנים כקצין וכמשפטן בפרקליטות הצבאית, והיה שותף לעיצוב האסטרטגיה המשפטית של ישראל בזירה הבינלאומית.',
+    bf:'ארון סימפסון-גרוסמן שירת כחמש שנים כקצין וכמשפטן בפרקליטות הצבאית, והיה שותף לעיצוב האסטרטגיה המשפטית של ישראל בזירה הבינלאומית. הוא בעל תארים במשפטים, כלכלה ומימון, וצפוי להתחיל MBA ב-Wharton. תחומי העניין שלו כוללים השקעות, טכנולוגיות דו-שימושיות ותשתיות.',
+    hl:['שירת כקצין וכמשפטן בפרקליטות הצבאית במשך כחמש שנים','היה שותף לעיצוב האסטרטגיה המשפטית של ישראל בזירה הבינלאומית','בעל רקע משולב במשפטים, כלכלה ומימון']
+  },
+  'Maya Shiloni':{
+    r:'סטודנטית ל-Government and Economics, Harvard University',
+    loc:'Harvard College',
+    hd:'עוסקת במדיניות ציבורית, מודיעין ומנהיגות סטודנטיאלית',
+    bs:'סטודנטית ב-Harvard University לתחומי Government and Economics ובוגרת יחידת 8200. צברה ניסיון במודיעין, בניהול מוצר ובעשייה ציבורית בארצות הברית ובישראל.',
+    bf:'מאיה שילוני היא סטודנטית ב-Harvard University לתחומי Government and Economics ובוגרת יחידת 8200, שם שירתה בניהול פרויקטים ובניהול מוצר. בהמשך צברה ניסיון גם בזירה הציבורית והפרלמנטרית, כולל התמחות אצל חבר הקונגרס Josh Gottheimer ועבודה בכנסת ישראל. לצד זאת הובילה יוזמות סטודנטיאליות משמעותיות, ובהן Harvard College Israel Trek וה-International Israel Summit. תחומי העניין שלה כוללים משפט, מדיניות ציבורית ופוליטיקה ישראלית.',
+    hl:['בוגרת יחידת 8200 עם ניסיון במודיעין ובניהול מוצר','צברה ניסיון בזירה הציבורית והפרלמנטרית בארצות הברית ובישראל','הובילה יוזמות סטודנטיאליות מרכזיות ב-Harvard ובקהילה הישראלית']
+  },
+  'Sagie Sharon':{
+    r:'עוסק במדיניות טכנולוגיה, חדשנות ויזמות',
+    loc:'ישראל',
+    bs:'פועל בממשק שבין חינוך, טכנולוגיה ויזמות, ומתמקד בשאלות של מדיניות, מוסדות ציבור והיערכות לעידן טכנולוגי משתנה.',
+    bf:'שגיא שרון פועל בממשק שבין חינוך, טכנולוגיה ויזמות, ומתמקד באופן שבו מערכות ציבוריות ומוסדות חינוך נערכים לעידן טכנולוגי משתנה. הרקע שלו משלב עשייה חברתית, יוזמות חינוכיות ועבודה סביב תהליכי שינוי וחדשנות.'
+  },
+  'Ofir Cohen':{
+    r:'מועמד ל-MPA, Princeton University',
+    loc:'Princeton, NJ',
+    hd:'יועץ למדיניות ציבורית, חדשנות וטכנולוגיה',
+    bs:'מועמד ל-MPA ב-Princeton University, המתמקד במדיניות AI, חדשנות ותחרותיות כלכלית. לשעבר יועץ בבית הנבחרים האמריקאי וראש מטה ב-DNAidea.',
+    bf:'אופיר כהן הוא מועמד ל-MPA ב-Princeton University, עם התמקדות במדיניות טכנולוגיה, AI, חדשנות ותחרותיות כלכלית. בעבר שימש יועץ בבית הנבחרים האמריקאי בתחומי חוץ וכלכלה, ובהמשך כיהן כראש מטה ב-DNAidea. פועל בצומת שבין מדיניות ציבורית, שותפויות בין-מגזריות וחדשנות, ומתעניין במיוחד בבניית גשרים בין ממשל, פילנתרופיה והמגזר הפרטי סביב טכנולוגיות מתפתחות.',
+    hl:['שימש יועץ בבית הנבחרים האמריקאי בתחומי חוץ וכלכלה','כיהן כראש מטה ב-DNAidea והוביל עבודה אסטרטגית רב-מגזרית','מתמקד במדיניות טכנולוגיה, AI וחדשנות בזירה הציבורית']
+  },
+  'Uzi Kalchaim':{
+    r:'Client Solutions Manager, Meta Israel',
+    loc:'ישראל',
+    bs:'עורך דין וכלכלן. לשעבר יועץ לשרי האוצר והביטחון, ועבד גם בתחום קרנות ההשקעה. כיום פועל ב-Meta Israel בצוות Media & Aggregators.',
+    bf:'עוזי כלחיים הוא עורך דין וכלכלן, עם רקע בעבודה ציבורית, בייעוץ למדיניות כלכלית ובתחום ההשקעות. בעבר שימש יועץ לשרי האוצר והביטחון, וכן עסק בקרנות השקעה וב-Private Equity. כיום פועל ב-Meta Israel כ-Client Solutions Manager בצוות Media & Aggregators.'
+  }
+};
+
+function applyProfileOverrides(m){
+  var o=PROFILE_OVERRIDES[m.n]
+    ||(/ofir-cohen-innovation/.test(m.li||'')?PROFILE_OVERRIDES['Ofir Cohen']:null)
+    ||(/aaron-s-g/.test(m.li||'')?PROFILE_OVERRIDES['Aaron Simpson-Grossman']:null)
+    ||(/uzi-kalchaim-strategy/.test(m.li||'')?PROFILE_OVERRIDES['Uzi Kalchaim']:null);
+  if(!o)return m;
+  Object.keys(o).forEach(function(k){m[k]=o[k]});
+  return m;
+}
+
+function clr(n){var h=0;for(var i=0;i<n.length;i++)h=((h<<5)-h)+n.charCodeAt(i);return CL[Math.abs(h)%CL.length]}
+function ini(n){var p=n.trim().split(/\s+/);return p.length===1?p[0][0].toUpperCase():(p[0][0]+p[p.length-1][0]).toUpperCase()}
+function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function oneLine(s){return(s||'').replace(/\s+/g,' ').trim()}
+function normalizeSearchText(s){
+  return oneLine(s).toLowerCase().replace(/[“”"'.:,;()\-_/]/g,' ').replace(/\s+/g,' ').trim();
+}
+function preview(s,n){
+  s=oneLine(s);
+  if(!s)return '';
+  if(s.length<=n)return s;
+  var cut=s.slice(0,n);
+  var last=cut.lastIndexOf(' ');
+  if(last>60)cut=cut.slice(0,last);
+  return cut+'...';
+}
+function membersLabel(n){return n+' חברים'}
+function getCacheKey(){return 'nextgen_forum_members_cache_v2'}
+function saveMembersCache(){
+  try{localStorage.setItem(getCacheKey(),JSON.stringify(MEMBERS));}catch(e){}
+}
+function loadMembersCache(){
+  try{
+    var raw=localStorage.getItem(getCacheKey());
+    if(!raw)return [];
+    var parsed=JSON.parse(raw);
+    return Array.isArray(parsed)?parsed:[];
+  }catch(e){return []}
+}
+function getMemberCorpus(m){return normalizeSearchText([m.n,m.r,m.loc,m.bs,m.bf,m.em].join(' '))}
+function getMemberTopics(m){
+  var corpus=getMemberCorpus(m),hits=[];
+  TOPIC_RULES.forEach(function(t){
+    if(t.terms.some(function(term){return corpus.indexOf(normalizeSearchText(term))>=0;}))hits.push(t.label);
+  });
+  return hits;
+}
+function getSearchTokens(q){
+  q=normalizeSearchText(q);
+  if(!q)return [];
+  var tokens=[q];
+  TOPIC_RULES.forEach(function(t){
+    if(t.label===q||t.terms.some(function(term){return normalizeSearchText(term)===q;})){
+      tokens=tokens.concat(t.terms.map(normalizeSearchText));
+      tokens.push(normalizeSearchText(t.label));
+    }
+  });
+  return Array.from(new Set(tokens.filter(Boolean)));
+}
+function parseHighlightsField(value){
+  if(Array.isArray(value))return value.filter(Boolean).slice(0,3);
+  return String(value||'')
+    .split(/\r?\n|\u2022|•|;+/g)
+    .map(function(p){return cleanProfessionalText(p);})
+    .filter(Boolean)
+    .slice(0,3);
+}
+function truncateClean(s,n){
+  s=oneLine(s);
+  if(!s)return '';
+  if(s.length<=n)return s;
+  var cut=s.slice(0,n);
+  var last=cut.lastIndexOf(' ');
+  if(last>40)cut=cut.slice(0,last);
+  return cut.trim();
+}
+function splitBioParts(text){
+  return oneLine(text)
+    .replace(/->|→|—|–/g,'. ')
+    .replace(/,\s+/g,'. ')
+    .split(/[.!?;]+/g)
+    .map(function(p){return p.trim();})
+    .filter(Boolean);
+}
+function cleanProfessionalText(text){
+  return oneLine((text||'')
+    .replace(/^([A-Za-z\u0590-\u05FF' -]+)\s+(הוא|היא)\s+/,'')
+    .replace(/\b(כיום|ועכשיו|currently|now)\b/ig,'')
+    .replace(/\s+/g,' ')
+    .trim());
+}
+function getHighlights(m){
+  var manual=parseHighlightsField(m.hl);
+  if(manual.length)return manual;
+  var seen={};
+  return splitBioParts(m.bf||m.bs||'')
+    .map(cleanProfessionalText)
+    .filter(function(p){
+      var key=p.toLowerCase();
+      if(!p||p.length<18||seen[key])return false;
+      seen[key]=true;
+      return !/(^אני\b| מתעניין\b| interested\b| enjoys\b| plans\b| צפוי להתחיל\b| currently\b)/i.test(p);
+    })
+    .slice(0,3);
+}
+function professionalHeadline(m){
+  if(m.hd)return m.hd;
+  var role=oneLine(m.r||'')
+    .replace(/\b(University|College|candidate|student|incoming)\b.*$/i,'')
+    .replace(/\b(MPA|MPP|MPM|MBA|MSc|MA|BA|LLB|PhD)\b.*$/i,'')
+    .replace(/\b(מועמד|מועמדת|סטודנט|סטודנטית)\b.*$/i,'')
+    .replace(/^מועמד(?:ת)? ל-[^,]+,\s*/,'')
+    .replace(/^סטודנט(?:ית)? ל-[^,]+,\s*/,'')
+    .replace(/^[,.\-–—\s]+|[,.\-–—\s]+$/g,'')
+    .trim();
+  if(role&&role.length<=70)return role;
+  var first=getHighlights(m)[0]||'';
+  return truncateClean(first||role||'חבר/ת בפורום',70);
+}
+function professionalSubtitle(m){
+  if(m.sd)return truncateClean(m.sd,95);
+  var role=oneLine(m.r||'');
+  if(role&&role!==professionalHeadline(m))return truncateClean(role,95);
+  return '';
+}
+function renderHighlights(m){
+  var points=getHighlights(m);
+  if(!points.length)return '';
+  return '<ul class="card-points">'+points.map(function(p){return '<li>'+e(truncateClean(p,120))+'</li>'}).join('')+'</ul>';
+}
+function memberId(m){
+  var li=(m.li||'').toLowerCase();
+  if(li.indexOf('ofir-cohen-innovation')>=0)return 'ofir';
+  if(li.indexOf('maya-shiloni')>=0)return 'maya';
+  if(li.indexOf('aaron-s-g')>=0)return 'aaron';
+  if(li.indexOf('sagie-sharon')>=0)return 'sagie';
+  var n=normalizeSearchText(m.n||'');
+  if(n.indexOf('maya shiloni')>=0)return 'maya';
+  if(n.indexOf('ofir cohen')>=0)return 'ofir';
+  if(n.indexOf('aaron simpson grossman')>=0)return 'aaron';
+  if(n.indexOf('sagie sharon')>=0)return 'sagie';
+  return normalizeSearchText(m.n||'');
+}
+function isSteeringMember(m){
+  var id=memberId(m);
+  return id==='ofir'||id==='maya';
+}
+function sameMember(a,b){
+  if(!a||!b)return false;
+  var ali=(a.li||'').toLowerCase().trim();
+  var bli=(b.li||'').toLowerCase().trim();
+  if(ali&&bli&&ali===bli)return true;
+  return memberId(a)===memberId(b);
+}
+function mergeMemberData(target,src){
+  if(src.ph)target.ph=src.ph;
+  if(src.hd)target.hd=src.hd;
+  if(src.sd)target.sd=src.sd;
+  if(src.hl&&parseHighlightsField(src.hl).length)target.hl=parseHighlightsField(src.hl);
+  if(src.bf&&oneLine(src.bf)!==oneLine(target.bs||''))target.bf=src.bf;
+  if(!target.bs&&src.bs)target.bs=src.bs;
+  if(!target.r&&src.r)target.r=src.r;
+  if(!target.loc&&src.loc)target.loc=src.loc;
+  if(!target.li&&src.li)target.li=src.li;
+  if(!target.em&&src.em)target.em=src.em;
+}
+function dedupeMembers(){
+  var merged=[];
+  MEMBERS.forEach(function(m){
+    var found=merged.find(function(x){return sameMember(x,m)});
+    if(found)mergeMemberData(found,m);
+    else merged.push(m);
+  });
+  MEMBERS=merged.map(applyProfileOverrides);
+}
+
+var LI='<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>';
+var MI='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>';
+var LO='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>';
+var DN='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>';
+var UP='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>';
+
+function card(m){
+  var bg=clr(m.n);
+  var fullBio=oneLine(m.bf||m.bs||'');
+  var hasMore=!!fullBio&&fullBio.length>120;
+  var subtitle=professionalSubtitle(m);
+  var topics=getMemberTopics(m);
+  var corpus=getMemberCorpus(m)+' '+topics.map(normalizeSearchText).join(' ');
+  var av=m.ph
+    ?'<img src="'+e(m.ph)+'" alt="'+e(m.n)+'" onload="this.parentNode.style.background=\'transparent\'" onerror="this.remove();this.parentNode.style.background=\''+bg+'\'">'
+    :ini(m.n);
+  var safe=(m.em||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  var li=m.li?'<a class="btn-li" href="'+e(m.li)+'" target="_blank" rel="noopener">'+LI+'LinkedIn</a>':'';
+  var em=m.em?'<button class="btn-em" onclick="rev(this,\''+safe+'\')">'+MI+'<span>הצג מייל</span></button>':'';
+  return '<div class="card" data-s="'+e(corpus)+'" data-topics="'+e(topics.join('|'))+'">'
+    +'<div class="card-top">'
+      +'<div class="avatar" style="background:'+(m.ph?'#d0cdc5':bg)+'">'+av+'</div>'
+      +'<div class="card-identity">'
+        +'<div class="card-name">'+e(m.n)+'</div>'
+        +'<div class="card-role">'+e(professionalHeadline(m))+'</div>'
+        +(subtitle?'<div class="card-subtitle">'+e(subtitle)+'</div>':'')
+        +'<div class="card-loc">'+LO+'<span>'+e(m.loc)+'</span></div>'
+      +'</div>'
+    +'</div>'
+    +'<div class="card-bio">'
+      +'<div class="bio-short">'+renderHighlights(m)+'</div>'
+      +(hasMore?'<div class="bio-full"><div class="bio-full-text">'+e(fullBio)+'</div></div>':'')
+      +(hasMore?'<button class="bio-toggle" onclick="tgl(this)">קרא עוד '+DN+'</button>':'')
+    +'</div>'
+    +(li||em?'<div class="card-footer">'+li+em+'</div>':'')
+  +'</div>'
+}
+
+function rev(btn,em){
+  if(btn.classList.contains('on')){if(navigator.clipboard)navigator.clipboard.writeText(em);return}
+  btn.classList.add('on');btn.querySelector('span').textContent=em;btn.title='לחיצה תעתיק את הכתובת'
+}
+function tgl(btn){
+  var bio=btn.closest('.card-bio'),s=bio.querySelector('.bio-short'),f=bio.querySelector('.bio-full');
+  if(!f)return;
+  var expanding=f.style.display!=='block';
+  s.style.display=expanding?'none':'-webkit-box';
+  f.style.display=expanding?'block':'none';
+  bio.style.minHeight=expanding?'auto':'112px';
+  btn.innerHTML=expanding?'קרא פחות '+UP:'קרא עוד '+DN
+}
+function cardMatches(c,q){
+  if(!q)return true;
+  var hay=normalizeSearchText(c.dataset.s||'');
+  var tokens=getSearchTokens(q);
+  return tokens.some(function(token){return hay.indexOf(token)>=0;});
+}
+function flt(){
+  var q=document.getElementById('q').value;
+  document.querySelectorAll('.card').forEach(function(c){
+    var topicOk=!ACTIVE_TOPIC||(c.dataset.topics||'').split('|').includes(ACTIVE_TOPIC);
+    var queryOk=cardMatches(c,q);
+    c.style.display=(topicOk&&queryOk)?'':'none'
+  });
+  var vis=document.querySelectorAll('.card:not([style*="none"])').length;
+  var steeringSection=document.getElementById('steeringSection');
+  var visibleSteering=document.querySelectorAll('#steeringGrid .card:not([style*="none"])').length;
+  if(steeringSection)steeringSection.style.display=visibleSteering?'':'none';
+  document.getElementById('cnt').textContent=membersLabel(vis)
+}
+
+function renderTopicBar(){
+  var bar=document.getElementById('topicBar');
+  if(!bar)return;
+  if(!MEMBERS.length){bar.innerHTML='';return;}
+  bar.innerHTML='<button class="topic-chip'+(!ACTIVE_TOPIC?' active':'')+'" type="button" onclick="setTopic(\'\')">הכול <span>(' + MEMBERS.length + ')</span></button>'
+    +TOPIC_RULES.map(function(t){
+      var count=MEMBERS.filter(function(m){return getMemberTopics(m).includes(t.label)}).length;
+      return '<button class="topic-chip'+(ACTIVE_TOPIC===t.label?' active':'')+'" type="button" onclick="setTopic(\''+e(t.label).replace(/'/g,"&#39;")+'\')">'+e(t.label)+' <span>(' + count + ')</span></button>';
+    }).join('');
+}
+function setTopic(topic){
+  ACTIVE_TOPIC=topic||'';
+  renderTopicBar();
+  flt();
+}
+function setLoading(msg){
+  var note=document.getElementById('loadingNote');
+  if(!note)return;
+  note.textContent=msg||'';
+  note.style.display=msg?'block':'none';
+}
+function renderCards(){
+  var steering=document.getElementById('steeringGrid');
+  var steeringSection=document.getElementById('steeringSection');
+  var steeringMembers=MEMBERS.filter(isSteeringMember).sort(function(a,b){
+    var oa=memberId(a)==='ofir'?0:1;
+    var ob=memberId(b)==='ofir'?0:1;
+    return oa-ob;
+  });
+  var mainMembers=MEMBERS.filter(function(m){return !isSteeringMember(m);});
+  g.innerHTML=mainMembers.map(card).join('');
+  if(steeringMembers.length){
+    steering.innerHTML=steeringMembers.map(card).join('');
+    steeringSection.style.display='';
+  } else {
+    steering.innerHTML='';
+    steeringSection.style.display='none';
+  }
+  setLoading(MEMBERS.length?'':'טוען את חברי הפורום...');
+}
+
+function syncBioButtons(){
+  document.querySelectorAll('.card-bio').forEach(function(b){
+    var btn=b.querySelector('.bio-toggle');
+    if(!btn)return;
+    var full=b.querySelector('.bio-full');
+    if(full)full.style.display='none';
+    b.style.minHeight='112px';
+    btn.style.display=full?'inline-flex':'none';
+  });
+}
+
+// Initial render from hardcoded data
+var g=document.getElementById('grid');
+var cachedMembers=loadMembersCache();
+if(cachedMembers.length)MEMBERS=cachedMembers.map(applyProfileOverrides);
+dedupeMembers();
+renderCards();
+syncBioButtons();
+renderTopicBar();
+document.getElementById('cnt').textContent=membersLabel(MEMBERS.length);
+
+var DATA_ENDPOINT='https://script.google.com/macros/s/AKfycbyJrRU3zTZGtPFH6WPOtZMcqwD0Gwp7_q4lcjYRx0AJnvitPbuSBAUqkp06SYdTPi94vw/exec'; // Paste the deployed Apps Script web app URL here
+
+// Then try to refresh from sheet (picks up new members + photos)
+function normImg(v){
+  v=(v||'').trim();
+  if(!v)return '';
+  var m=v.match(/=image\(\s*"([^"]+)"/i)||v.match(/=image\(\s*'([^']+)'/i);
+  if(m&&m[1])v=m[1].trim();
+  if(/^https?:\/\//i.test(v))return v;
+  var d=v.match(/https?:\/\/drive\.google\.com\/file\/d\/([^\/?#]+)/i)
+    ||v.match(/https?:\/\/drive\.google\.com\/open\?id=([^&#]+)/i)
+    ||v.match(/https?:\/\/drive\.google\.com\/uc\?(?:[^#]*&)?id=([^&#]+)/i)
+    ||v.match(/^[A-Za-z0-9_-]{20,}$/);
+  if(d&&d[1])return 'https://drive.google.com/uc?export=view&id='+d[1];
+  if(d&&d[0]===v)return 'https://drive.google.com/uc?export=view&id='+d[0];
+  return '';
+}
+
+function mergeMembers(fresh){
+  if(!fresh||!fresh.length)return;
+  fresh.forEach(function(fm){
+    var found=MEMBERS.find(function(m){return sameMember(m,fm)});
+    if(found){
+      mergeMemberData(found,fm);
+    } else {
+      if(fm.bf&&!fm.bs)fm.bs=preview(fm.bf,170);
+      if(fm.hl)fm.hl=parseHighlightsField(fm.hl);
+      MEMBERS.push(applyProfileOverrides(fm));
+    }
+  });
+  dedupeMembers();
+  renderCards();
+  syncBioButtons();
+  renderTopicBar();
+  document.getElementById('cnt').textContent=membersLabel(MEMBERS.length);
+  flt();
+  saveMembersCache();
+  setLoading('');
+}
+
+function loadFromAppScript(){
+  if(!DATA_ENDPOINT)return Promise.reject(new Error('No endpoint'));
+  var cb='_appcb'+Date.now();
+  return new Promise(function(resolve,reject){
+    var t=setTimeout(function(){delete window[cb];reject(new Error('timeout'))},20000);
+    window[cb]=function(data){
+      clearTimeout(t);delete window[cb];
+      if(!data||!Array.isArray(data.members)){reject(new Error('Bad payload'));return;}
+      mergeMembers(data.members.map(function(m){
+        var li=(m.li||'').trim();
+        if(li&&!/^https?:\/\//i.test(li))li='https://'+li;
+        return{
+          n:(m.n||'').trim(),
+          r:(m.r||'').trim(),
+          loc:(m.loc||'').trim(),
+          hd:(m.hd||m.headline||'').trim(),
+          sd:(m.sd||m.sub||m.subtitle||'').trim(),
+          hl:parseHighlightsField(m.hl||m.bullets||m.highlights||''),
+          li:li,
+          em:(m.em||'').trim(),
+          bs:(m.bs||'').trim(),
+          bf:(m.bf||'').trim(),
+          ph:normImg(m.ph||'')
+        };
+      }).filter(function(m){return m.n;}));
+      resolve();
+    };
+    var s=document.createElement('script');
+    s.onerror=function(){delete window[cb];clearTimeout(t);reject(new Error('script error'))};
+    s.src=DATA_ENDPOINT+(DATA_ENDPOINT.indexOf('?')>=0?'&':'?')+'callback='+cb;
+    document.head.appendChild(s);
+  });
+}
+
+function loadFromGviz(){
+  var cb='_cb'+Date.now();
+  return new Promise(function(resolve,reject){
+    var t=setTimeout(function(){delete window[cb];reject(new Error('timeout'))},20000);
+    window[cb]=function(resp){
+      clearTimeout(t);delete window[cb];
+      if(!resp||!resp.table){reject(new Error('No table'));return;}
+    var cols=resp.table.cols;
+    var rows=resp.table.rows;
+    function fi(){for(var k=0;k<arguments.length;k++)for(var i=0;i<cols.length;i++)if((cols[i].label||'').toLowerCase().includes(arguments[k]))return i;return-1}
+    var C={fn:fi('×¤×¨×˜×™','first'),ln:fi('×ž×©×¤×—×”','last'),li:fi('linkedin','×œ×™× ×§×“'),ro:fi('×¢×•×©×™×','role','title'),lo:fi('××™×¤×”','location','city'),hd:fi('כותרת ראשית','headline','main title'),sd:fi('כותרת משנית','subtitle','sub title'),hl:fi('3 בולטים','בולטים','highlights','bullets'),bs:fi('×‘×•×œ×˜×™×','×§×¦×¨','short'),em:fi('××™×ž×™×™×œ','mail'),ph:fi('×ª×ž×•× ×”','photo','image','picture','img','avatar','url')};
+    if(C.fn<0)C.fn=1;
+    if(C.ln<0)C.ln=2;
+    if(C.li<0)C.li=3;
+    if(C.ro<0)C.ro=4;
+    if(C.lo<0)C.lo=5;
+    if(C.hd<0&&cols.length>=3)C.hd=cols.length-1;
+    if(C.sd<0&&cols.length>=2)C.sd=cols.length-2;
+    if(C.hl<0&&cols.length>=3)C.hl=cols.length-3;
+    if(C.bs<0)C.bs=6;
+    if(C.bf===undefined||C.bf<0)C.bf=7;
+    if(C.em<0)C.em=8;
+    if(C.bs>=0&&C.bf===undefined)C.bf=Math.min(C.bs+1,cols.length-1);
+    // If photo col not found by name, look for any column that has image-looking values
+    if(C.ph<0&&rows.length>0){
+      for(var ci=0;ci<cols.length;ci++){
+        for(var ri=0;ri<Math.min(rows.length,5);ri++){
+          var v=rows[ri].c[ci]&&rows[ri].c[ci].v?String(rows[ri].c[ci].v):'';
+          if(normImg(v)){C.ph=ci;break}
+        }
+        if(C.ph>=0)break;
+      }
+    }
+    function cv(r,i){
+      if(i<0||!r.c[i])return '';
+      if(r.c[i].v!==null&&r.c[i].v!==undefined)return String(r.c[i].v).trim();
+      if(r.c[i].f!==null&&r.c[i].f!==undefined)return String(r.c[i].f).trim();
+      return '';
+    }
+    var fresh=rows.map(function(r){
+      var fn=cv(r,C.fn),ln=cv(r,C.ln);
+      if(!fn&&!ln)return null;
+      var li=cv(r,C.li);if(li&&!li.startsWith('http'))li='https://'+li;
+      var ph=normImg(cv(r,C.ph));
+      var bs=cv(r,C.bs),bf=cv(r,C.bf);
+      return{n:(fn+' '+ln).trim(),r:cv(r,C.ro),loc:cv(r,C.lo),hd:cv(r,C.hd),sd:cv(r,C.sd),hl:parseHighlightsField(cv(r,C.hl)),li:li,em:cv(r,C.em),bs:bs,bf:bf,ph:ph}
+    }).filter(Boolean);
+    if(fresh.length>0){
+      // Merge photos into existing members, add new members
+      fresh.forEach(function(fm){
+        var found=MEMBERS.find(function(m){return sameMember(m,fm)});
+        if(found){
+          mergeMemberData(found,fm);
+        }
+        else MEMBERS.push(fm)
+      });
+      dedupeMembers();
+      renderCards();
+      syncBioButtons();
+      renderTopicBar();
+      document.getElementById('cnt').textContent=membersLabel(MEMBERS.length);
+      flt();
+      saveMembersCache();
+      setLoading('');
+    }
+  };
+  var s=document.createElement('script');
+  s.onerror=function(){delete window[cb]};
+  s.src='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=reqId:0;out:json;callback:'+cb;
+  document.head.appendChild(s);
+  });
+}
+function loadSheet(){
+  var p=Promise.resolve();
+  if(DATA_ENDPOINT){
+    p=p.then(function(){return loadFromAppScript();}).catch(function(err){
+      console.warn('App Script load failed',err);
+    });
+  }
+  return p
+    .then(function(){return loadFromGviz();})
+    .catch(function(err){
+      if(MEMBERS.length){
+        setLoading('');
+      }else{
+        setLoading('לא הצלחנו לטעון את חברי הפורום כרגע. נסו לרענן שוב.');
+      }
+      console.warn('Member data refresh failed',err);
+    });
+}
+loadSheet();
+</script>
+</body>
+</html>
+
+
